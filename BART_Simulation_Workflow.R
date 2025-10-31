@@ -85,7 +85,7 @@ model1_predictions <- model1$y_hat_train %>% as_tibble()
 model1_predictions <- model1_predictions %>% 
   cbind(simu_data$pop_density, model1_CI) %>% 
   mutate(observed = exp(simu_data$pop_density), predicted = exp(value),
-         residual = predicted - observed,
+         residual = observed - predicted,
          model = "BART")
 write.csv(model1_predictions, paste0(output_path1, "Simu BART model results.csv"))
 
@@ -223,7 +223,7 @@ model2_predictions <- model2$y_hat_train %>% as_tibble()
 model2_predictions <- model2_predictions %>% 
   cbind(train$pop_density, model2_CI) %>% 
   mutate(observed = exp(train$pop_density), predicted = exp(value),
-         residual = predicted - observed)
+         residual = observed - predicted)
 
 # compute goodness-of-fit metrics on In-sample
 model2_predictions %>%
@@ -263,7 +263,7 @@ test <- test %>%
   select(pop_density) %>% 
   cbind(predicted, test_CI)%>% 
   mutate(observed = exp(pop_density), predicted = exp(predicted),
-         residual = predicted - observed)
+         residual = observed - predicted)
 
 
 # compute goodness-of-fit metrics
@@ -422,7 +422,7 @@ covs_test_predictions <- covs_test_predictions %>%
 
 predicted_population1 <- covs_test_predictions %>% 
   rename(predicted = predicted_pop, observed = pop) %>% 
-  mutate(residual = predicted - observed)
+  mutate(residual = observed - predicted)
 
 write_feather(predicted_population1, paste0(output_path1, "Simu_BART_predictions.feather"))
 

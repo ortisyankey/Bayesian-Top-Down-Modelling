@@ -77,7 +77,7 @@ model1_predictions <- model1$predicted %>% as_tibble()
 model1_predictions <- model1_predictions %>% 
   cbind(simu_data2$pop_density) %>% 
   mutate(observed = exp(simu_data2$pop_density), predicted = exp(value),
-         residual = predicted - observed,
+         residual = observed - predicted,
          residual1 = value - simu_data2$pop_density,
          model = "RandomForest")
 
@@ -202,7 +202,7 @@ model2_predictions <- model2$predicted %>% as_tibble()
 model2_predictions <- model2_predictions %>% 
   cbind(train$pop_density) %>% 
   mutate(observed = exp(train$pop_density), predicted = exp(value),
-         residual = predicted - observed)
+         residual = observed - predicted)
 
 
 # compute goodness-of-fit metrics
@@ -239,7 +239,7 @@ test <- test %>%
   select(pop_density) %>% 
   cbind(test_predicted)%>% 
   mutate(observed = exp(pop_density), predicted = exp(test_predicted),
-         residual = predicted - observed)
+         residual = observed - predicted)
 
 
 # compute goodness-of-fit metrics
@@ -425,7 +425,7 @@ write_feather(population_predictions1, paste0(output_path1, "Simu_RF_predictions
 
 #Calculate goodness of fit metrics
 population_predictions1 %>% 
-  mutate(residual = predicted - observed) %>% 
+  mutate(residual = observed - predicted) %>% 
   summarise(Bias= mean(residual),
             Imprecision = sd(residual),
             Inaccuracy = mean(abs(residual)),
