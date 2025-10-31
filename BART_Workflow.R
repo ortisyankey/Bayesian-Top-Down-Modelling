@@ -87,7 +87,7 @@ model1_predictions <- model1$y_hat_train %>% as_tibble()
 model1_predictions <- model1_predictions %>% 
   cbind(GHA_df2$pop_density, model1_CI) %>% 
   mutate(observed = exp(GHA_df2$pop_density), predicted = exp(value),
-         residual =  observed - predicted ,
+         residual =  observed - predicted,
          model = "BART")
 write.csv(model1_predictions, paste0(output_path, "BART model results.csv"))
 
